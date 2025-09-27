@@ -1,70 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Test graphique — Mon portfolio</title>
-  <!-- Plotly CDN -->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 20px; max-width:900px; margin:auto; }
-    header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
-    h1 { margin:0; font-size:1.5rem; }
-    #plot { height:500px; }
-    .note { color:#555; font-size:0.9rem; margin-top:12px; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Mon site sur l'économie</title>
+    <style>
+        /* Styles de base pour le menu */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            position: relative;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            background-color: #444;
+            padding: 10px;
+            list-style: none;
+        }
+        nav ul li:hover ul {
+            display: block;
+        }
+        nav ul li ul li {
+            display: block;
+            margin: 0;
+        }
+        nav ul li ul li a {
+            padding: 5px 10px;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Test : graphique Plotly</h1>
-  </header>
 
-  <p>Petit test pour vérifier que le site GitHub Pages affiche bien un graphique interactif.</p>
+    <nav>
+        <ul>
+            <li>Domaine
+                <ul>
+                    <li><a href="economie.html">Économie</a></li>
+                    <li><a href="inflation.html">Inflation</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 
-  <div id="plot"></div>
+    <h1>Bienvenue sur mon site sur l'économie</h1>
+    <p style="text-align:center;">Cliquez sur "Domaine" puis "Inflation" pour voir les graphiques.</p>
 
-  <p class="note">Si tout fonctionne : tu verras un graphique qui montre une série temporelle fictive. Essaie de survoler les points.</p>
-  
-    <!-- extrait à coller dans index.html -->
-  <h2>Test : graphique généré depuis R</h2>
-  
-  <p>Graphique créé avec R et plotly, intégré via iframe :</p>
-  
-  <iframe src="plots/plot_inflation.html"
-          style="width:100%; height:650px; border:1px solid #ddd;"
-          title="Graphique R - plotly (inflation)">
-    <!-- fallback si l'iframe n'est pas supportée -->
-    Votre navigateur ne supporte pas les iframes. Ouvrez <a href="plots/plot_inflation.html">le graphique ici</a>.
-  </iframe>
-
-
-  <script>
-    // Données simples en dur (pas besoin de CSV externe pour ce test)
-    const dates = [
-      '2020-01','2020-04','2020-07','2020-10',
-      '2021-01','2021-04','2021-07','2021-10',
-      '2022-01','2022-04','2022-07','2022-10',
-      '2023-01','2023-04','2023-07','2023-10'
-    ];
-    const values = [1.2,1.0,0.8,1.4,1.6,1.7,1.9,2.1,2.2,2.0,1.8,2.4,2.6,2.8,3.0,2.9];
-
-    const trace = {
-      x: dates,
-      y: values,
-      mode: 'lines+markers',
-      name: 'Exemple',
-      hovertemplate: '%{x}<br>Valeur: %{y:.2f}<extra></extra>'
-    };
-
-    const layout = {
-      title: 'Graphique test — série fictive',
-      xaxis: {title: 'Date'},
-      yaxis: {title: 'Valeur'},
-      margin: {t:50, r:20, b:50, l:60}
-    };
-
-    Plotly.newPlot('plot', [trace], layout, {responsive: true});
-
-  </script>
 </body>
 </html>
