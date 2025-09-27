@@ -3,14 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <title>Inflation</title>
+    <style>
+        /* Styles de base pour le menu */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            position: relative;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            background-color: #444;
+            padding: 10px;
+            list-style: none;
+        }
+        nav ul li:hover ul {
+            display: block;
+        }
+        nav ul li ul li {
+            display: block;
+            margin: 0;
+        }
+        nav ul li ul li a {
+            padding: 5px 10px;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-top: 30px;
+        }
+        iframe {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Menu identique à index.html -->
+    <nav>
+        <ul>
+            <li>Domaine
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="economie.html">Économie</a></li>
+                    <li><a href="inflation.html">Inflation</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
     <h1>Inflation</h1>
 
     <h2>Inflation globale</h2>
-    <iframe src="plots/plot_inflation.html" width="100%" height="500px" style="border:none;"></iframe>
+    <iframe src="plots/plot_inflation.html" width="90%" height="500px" style="border:none;"></iframe>
 
     <h2>Inflation par secteur</h2>
-    <iframe src="plots/plot_inflation_secteur.html" width="100%" height="500px" style="border:none;"></iframe>
+    <iframe src="plots/plot_inflation_secteur.html" width="90%" height="500px" style="border:none;"></iframe>
+
 </body>
 </html>
