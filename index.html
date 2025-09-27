@@ -24,6 +24,19 @@
   <div id="plot"></div>
 
   <p class="note">Si tout fonctionne : tu verras un graphique qui montre une série temporelle fictive. Essaie de survoler les points.</p>
+  
+    <!-- extrait à coller dans index.html -->
+  <h2>Test : graphique généré depuis R</h2>
+  
+  <p>Graphique créé avec R et plotly, intégré via iframe :</p>
+  
+  <iframe src="plots/plot_inflation.html"
+          style="width:100%; height:650px; border:1px solid #ddd;"
+          title="Graphique R - plotly (inflation)">
+    <!-- fallback si l'iframe n'est pas supportée -->
+    Votre navigateur ne supporte pas les iframes. Ouvrez <a href="plots/plot_inflation.html">le graphique ici</a>.
+  </iframe>
+
 
   <script>
     // Données simples en dur (pas besoin de CSV externe pour ce test)
@@ -51,18 +64,6 @@
     };
 
     Plotly.newPlot('plot', [trace], layout, {responsive: true});
-
-    <!-- extrait à coller dans index.html -->
-<h2>Test : graphique généré depuis R</h2>
-
-<p>Graphique créé avec R et plotly, intégré via iframe :</p>
-
-<iframe src="plots/plot_inflation.html"
-        style="width:100%; height:650px; border:1px solid #ddd;"
-        title="Graphique R - plotly (inflation)">
-  <!-- fallback si l'iframe n'est pas supportée -->
-  Votre navigateur ne supporte pas les iframes. Ouvrez <a href="plots/plot_inflation.html">le graphique ici</a>.
-</iframe>
 
   </script>
 </body>
