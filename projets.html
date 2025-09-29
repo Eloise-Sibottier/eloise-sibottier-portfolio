@@ -163,7 +163,13 @@
       <div class="row g-3 mt-2">
         <div class="col-md-6">
           <div class="map-placeholder" id="map-observed">
-            <!-- Remplace par : <img src="/assets/pisa_map_observed.png" class="img-fluid" alt="Carte PISA observés"> -->
+            <div class="section-card">
+                <h2>Carte interactive des scores PISA</h2>
+                <iframe src="assets/Carte_PISA_interactive.html"
+                        style="width:100%; height:600px; border:none; border-radius:8px; overflow:hidden;"
+                        title="Carte interactive PISA"></iframe>
+                <p class="small-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
+              </div>
             Carte observée — place ton image : <code>/assets/pisa_map_observed.png</code>
           </div>
           <p class="small-muted mt-2 mb-0"><strong>Légende suggérée :</strong> classes de score (ex. <1000 ; 1000–1199 ; ≥1200). Couleurs et projection choisies dans R.</p>
