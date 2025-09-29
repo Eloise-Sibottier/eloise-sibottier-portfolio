@@ -1,152 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyse des scores PISA par régression linéaire</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-        h1 {
-            color: #2c3e50;
-            font-size: 2.2em;
-        }
-        h2 {
-            color: #3498db;
-            font-size: 1.6em;
-            margin-top: 30px;
-        }
-        .summary-box {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .download-btn {
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 20px 0;
-            transition: background-color 0.3s;
-        }
-        .download-btn:hover {
-            background-color: #2980b9;
-        }
-        .map-container {
-            margin: 30px 0;
-            text-align: center;
-        }
-        .map-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #7f8c8d;
-            font-size: 0.9em;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Projet — Rapport PISA | Éloïse Sibottier</title>
+  <meta name="description" content="Fiche projet : analyse des scores PISA — cartes des scores observés et des prédictions.">
+  <style>
+    :root{--bg:#f7f9fc;--card:#ffffff;--muted:#6b7280;--accent:#2563eb}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; background:var(--bg); color:#0f172a}
+    .container{max-width:980px;margin:32px auto;padding:20px}
+    header{display:flex;align-items:center;gap:16px}
+    .avatar{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#e0e7ff,#fef3c7);display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b1220}
+    h1{margin:0;font-size:20px}
+    p.lead{color:var(--muted);margin:8px 0 20px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.04)}
+    .card h3{margin:0 0 8px;font-size:16px}
+    .meta{font-size:13px;color:var(--muted)}
+    .kpi{display:flex;gap:12px;align-items:center}
+    .kpi .box{background:#f1f5f9;padding:8px 10px;border-radius:8px;font-weight:600}
+    img.responsive{width:100%;height:auto;border-radius:8px;border:1px solid #e6eef8}
+
+    /* full-width map area */
+    .map-area{grid-column:1/-1}
+
+    /* download / actions */
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;font-weight:600;text-decoration:none}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-outline{border:1px solid #cbd5e1;color:#0f172a;background:transparent}
+
+    /* collapsible */
+    details{background:#fff;padding:12px;border-radius:10px}
+
+    /* responsive */
+    @media (max-width:820px){.grid{grid-template-columns:1fr}.avatar{width:52px;height:52px}}
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">Mon Portfolio</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
-          <li class="nav-item"><a class="nav-link" href="cv.html">CV</a></li>
-          <li class="nav-item"><a class="nav-link active" href="projets.html">Projets</a></li>
-          <li class="nav-item"><a class="nav-link" href="indicateurs.html">Indicateurs</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Fil d’Ariane -->
-  <div class="container">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mt-3">
-        <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Projets</li>
-      </ol>
-    </nav>
-
+  <main class="container">
     <header>
-        <h1>Analyse des inégalités scolaires mondiales :<br>une étude des scores PISA par régression linéaire</h1>
-        <a href="rapport_regression_lineaire_et_R.pdf" class="download-btn" download>
-            Télécharger le rapport complet (PDF)
-        </a>
+      <div class="avatar">ES</div>
+      <div>
+        <h1>Projet — Analyse PISA (Rapport)</h1>
+        <p class="lead">Cartes : scores observés &amp; prédictions pour pays non testés — visualisations produites avec R.</p>
+      </div>
     </header>
 
-    <section class="summary-box">
-        <h2>Résumé du projet</h2>
-        <p>
-            Ce projet vise à comprendre les facteurs expliquant les écarts de scores PISA entre les pays, en utilisant une approche statistique basée sur la régression linéaire. Les scores PISA, mesurant les compétences des élèves de 15 ans en lecture, mathématiques et sciences, sont analysés à travers des variables socio-économiques et éducatives.
-        </p>
-        <p>
-            <strong>Objectifs :</strong> Identifier les déterminants des performances scolaires et prédire les scores PISA pour des pays non testés.
-        </p>
-        <p>
-            <strong>Outils utilisés :</strong> R (pour l'analyse statistique et la visualisation), données de l'OCDE et de la Banque Mondiale (2017).
-        </p>
+    <section style="margin-top:18px;">
+      <div class="grid">
+        <article class="card">
+          <h3>Résumé</h3>
+          <p class="meta">Objectif : expliquer les écarts de scores PISA entre pays et prévoir les scores pour les pays non testés.</p>
+          <ul style="margin:10px 0 0 18px;color:var(--muted)">
+            <li>Méthodes : régressions linéaires, log-transformations, tests d'interaction (R).</li>
+            <li>Résultats clés : PIB par habitant &amp; sous-alimentation très corrélés ; modèle explique 74% de la variance.</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-primary" href="/mnt/data/Rapport PISA final.pdf" download>📄 Télécharger le rapport (PDF)</a>
+            <a class="btn btn-outline" href="#maps">Voir les cartes</a>
+          </div>
+        </article>
+
+        <aside class="card">
+          <h3>Compétences démontrées</h3>
+          <div class="meta" style="margin-top:8px">
+            <div class="kpi"><div class="box">R</div><div class="box">Régression</div><div class="box">Data viz</div></div>
+            <p style="margin:10px 0 0;color:var(--muted)">Analyse critique d'indicateurs internationaux et communication scientifique.</p>
+          </div>
+        </aside>
+
+        <!-- Maps: place your R outputs here -->
+        <section id="maps" class="card map-area">
+          <h3>Cartes</h3>
+          <p class="meta">Insère ici : 1) carte des scores PISA observés 2) carte des prédictions (avec intervalles de confiance)</p>
+
+          <!-- Image placeholders: remplace les src par les images générées depuis R (png/svg/html) -->
+          <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <figure>
+              <img class="responsive" id="map-observed" src="/assets/pisa_map_observed.png" alt="Carte des scores PISA observés">
+              <figcaption class="meta" style="margin-top:6px">Carte — scores observés (remplace /assets/pisa_map_observed.png)</figcaption>
+            </figure>
+
+            <figure>
+              <img class="responsive" id="map-pred" src="/assets/pisa_map_pred.png" alt="Carte des prédictions PISA">
+              <figcaption class="meta" style="margin-top:6px">Carte — prédictions pour pays non testés (remplace /assets/pisa_map_pred.png)</figcaption>
+            </figure>
+          </div>
+
+          <p class="meta" style="margin-top:10px">Si tes cartes sont interactives (html/js), tu peux intégrer un <code>iframe</code> à la place des images. Exemple : <code>&lt;iframe src="/assets/interactive_map.html" style="width:100%;height:480px;border:0;border-radius:8px"&gt;&lt;/iframe&gt;</code></p>
+        </section>
+
+        <section class="card">
+          <h3>Détails techniques (pour toi)</h3>
+          <ol style="color:var(--muted);margin:8px 0 0 18px">
+            <li>Nom des fichiers image attendus : <code>/assets/pisa_map_observed.png</code> et <code>/assets/pisa_map_pred.png</code>.</li>
+            <li>Pour des SVG optimisés : nomme-les avec l'extension <code>.svg</code> et conserve les IDs si tu veux manipuler en JS.</li>
+            <li>Pour intégration interactive : exporte depuis R (htmlwidgets) dans <code>/assets/interactive_map_observed.html</code> et <code>/assets/interactive_map_pred.html</code> puis remplace les &lt;img&gt; par &lt;iframe&gt;.</li>
+            <li>Si tu veux une version imprimable/miniature, je peux ajouter une vignette ou une lightbox automatique.</li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h3>Résumé court pour la page liste projets</h3>
+          <p style="margin:8px 0;color:var(--muted)">Analyse statistique des scores PISA (R, régression). Modèle explicatif (R² ajusté = 0.717) et prédictions pour 71 pays non testés.</p>
+        </section>
+
+      </div>
+
+      <details>
+        <summary style="font-weight:700">Notes pour l'intégration (clique pour ouvrir)</summary>
+        <div style="margin-top:10px;color:var(--muted)">
+          <ul>
+            <li>Si tu héberges sur GitHub Pages, mets les images dans le dossier <code>assets/</code> au même niveau que la page <code>pisa.html</code> et remplace les chemins si besoin.</li>
+            <li>Pour garder la page légère, préfère des PNG de 1200px de large compressés ou des SVG vectoriels.</li>
+            <li>Je peux ajouter des légendes dynamiques (tooltip) si tu veux intégrer des valeurs au survol.</li>
+          </ul>
+        </div>
+      </details>
+
     </section>
 
-    <section class="summary-box">
-        <h2>Principaux résultats</h2>
-        <ul>
-            <li>Les pays de l'OCDE obtiennent des scores PISA significativement plus élevés et moins dispersés que les pays non-OCDE.</li>
-            <li>Le PIB par habitant et le taux de scolarisation en maternelle sont les variables les plus corrélées aux scores PISA.</li>
-            <li>La dépense publique en éducation (en % du PIB) a un effet négatif inattendu, suggérant que la qualité de l'investissement prime sur la quantité.</li>
-            <li>Le modèle final explique 74% de la variance des scores PISA.</li>
-            <li>Les prédictions pour les pays non testés révèlent des inégalités régionales marquées, notamment en Afrique.</li>
-        </ul>
-    </section>
-
-    <section class="map-container">
-        <h2>Carte des scores PISA (2017)</h2>
-        <p>Répartition mondiale des scores PISA par pays (données mesurées).</p>
-        <!-- Remplacez par ton fichier HTML/R généré -->
-        <img src="path/vers/ta_carte_pisa_2017.html" alt="Carte des scores PISA 2017" style="width:100%;">
-    </section>
-
-    <section class="map-container">
-        <h2>Carte des prédictions des scores PISA</h2>
-        <p>Prédictions des scores PISA pour les pays non testés, avec intervalles de confiance.</p>
-        <!-- Remplacez par ton fichier HTML/R généré -->
-        <img src="path/vers/ta_carte_predictions_pisa.html" alt="Carte des prédictions PISA" style="width:100%;">
-    </section>
-
-    <footer>
-        <p>© 2025 – Eloïse Sibottier – Master MAS – Université Paris-Dauphine</p>
+    <footer style="text-align:center;margin-top:28px;color:var(--muted)">
+      <small>© Éloïse Sibottier — Projet PISA</small>
     </footer>
+  </main>
+
+  <script>
+    // Small helper: if images 404, show a soft placeholder
+    document.addEventListener('DOMContentLoaded', ()=>{
+      ['map-observed','map-pred'].forEach(id=>{
+        const img=document.getElementById(id);
+        if(!img) return;
+        img.addEventListener('error', ()=>{
+          img.src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><rect width="100%" height="100%" fill="%23eef2ff"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%236b7280" font-size="20">Image manquante — place ton fichier dans /assets/ (ex: pisa_map_observed.png)</text></svg>'
+        })
+      })
+    })
+  </script>
 </body>
 </html>
-
-
