@@ -11,111 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    body {
-      padding-top: 70px;
-      font-family: 'Roboto', sans-serif;
-      background-color: #f5f7fa;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    /* Navbar */
-    .navbar {
-      background-color: #2c3e50 !important;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar-brand, .nav-link {
-      font-weight: 500;
-    }
-
-    .nav-link:hover {
-      color: #3498db !important;
-    }
-
-    /* Fil d'Ariane */
-    .breadcrumb {
-      background-color: transparent;
-      padding-left: 0;
-    }
-
-    .breadcrumb-item a {
-      color: #2c3e50;
-      text-decoration: none;
-    }
-
-    /* Cartes */
-    .card-custom {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      border-left: 4px solid #3498db;
-    }
-
-    /* Boutons */
-    .btn-primary {
-      background-color: #3498db;
-      border: none;
-      font-weight: 500;
-    }
-
-    .btn-primary:hover {
-      background-color: #217dbb;
-    }
-
-    /* Texte atténué */
-    .text-muted {
-      color: #6b7280;
-    }
-
-    /* Puces et KPI */
-    .kpi-badge {
-      background: #eef5ff;
-      padding: 0.35rem 0.6rem;
-      border-radius: 999px;
-      font-weight: 600;
-      color: #0b3a66;
-      font-size: 0.9rem;
-      margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
-      display: inline-block;
-    }
-
-    /* Conteneurs pour les visuels */
-    .visual-container {
-      width: 100%;
-      background-color: white;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      margin: 15px 0;
-      text-align: center;
-      border: 1px dashed #dee2e6;
-      min-height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px 0;
-      color: #6b7280;
-      font-size: 0.9rem;
-      margin-top: 30px;
-    }
-
-    /* Code */
-    pre {
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 6px;
-      overflow: auto;
-      font-size: 0.9rem;
-    }
+    body { padding-top: 70px; font-family: 'Roboto', sans-serif; background-color: #f5f7fa; color: #333; line-height: 1.6; }
+    .navbar { background-color: #2c3e50 !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .navbar-brand, .nav-link { font-weight: 500; }
+    .nav-link:hover { color: #3498db !important; }
+    .breadcrumb { background-color: transparent; padding-left: 0; }
+    .breadcrumb-item a { color: #2c3e50; text-decoration: none; }
+    .card-custom { background-color: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 4px solid #3498db; }
+    .btn-primary { background-color: #3498db; border: none; font-weight: 500; }
+    .btn-primary:hover { background-color: #217dbb; }
+    .text-muted { color: #6b7280; }
+    .kpi-badge { background: #eef5ff; padding: .35rem .6rem; border-radius: 999px; font-weight: 600; color: #0b3a66; font-size: .9rem; margin-right:.5rem; margin-bottom:.5rem; display:inline-block; }
+    .visual-container { width:100%; background-color: white; border-radius:8px; padding:15px; box-shadow:0 2px 10px rgba(0,0,0,0.05); margin:15px 0; text-align:center; border:1px dashed #dee2e6; min-height:300px; display:flex; align-items:center; justify-content:center; }
+    footer { text-align:center; padding:20px 0; color:#6b7280; font-size:.9rem; margin-top:30px; }
+    pre { background:#f8f9fa; padding:15px; border-radius:6px; overflow:auto; font-size:.9rem; }
   </style>
 </head>
 <body>
@@ -137,7 +46,7 @@
     </div>
   </nav>
 
-  <!-- Fil d’Ariane -->
+  <!-- Breadcrumb -->
   <div class="container mt-3">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -147,178 +56,118 @@
     </nav>
   </div>
 
-  <!-- Contenu principal -->
+  <!-- Main content -->
   <main class="container my-4">
-    <!-- Introduction -->
     <section class="card-custom">
       <div class="row">
         <div class="col-lg-8">
           <h1>Analyse des inégalités scolaires — rapport PISA</h1>
-          <p class="text-muted">
-            Étude statistique et prédictive des scores PISA (régression linéaire sous R, cartes des scores observés et prédits).
-          </p>
+          <p class="text-muted">Étude statistique et prédictive des scores PISA (régression linéaire sous R, cartes des scores observés et prédits).</p>
           <div class="mt-2">
             <span class="kpi-badge">R</span>
-            <span class="kpi-badge">Régression linéaire</span>
+            <span class="kpi-badge">Régression</span>
             <span class="kpi-badge">Data viz</span>
             <span class="kpi-badge">Cartographie</span>
           </div>
           <div class="mt-3">
-            <a href="/mnt/data/Rapport PISA final.pdf" class="btn btn-primary" download>
-              <i class="bi bi-file-earmark-pdf me-1"></i> Télécharger le rapport
-            </a>
-            <a href="projets.html" class="btn btn-outline-secondary">
-              <i class="bi bi-arrow-left me-1"></i> Retour aux projets
-            </a>
+            <a href="/mnt/data/Rapport PISA final.pdf" class="btn btn-primary" download><i class="bi bi-file-earmark-pdf me-1"></i> Télécharger le rapport</a>
+            <a href="projets.html" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Retour aux projets</a>
           </div>
         </div>
         <div class="col-lg-4">
           <h5>Résumé rapide</h5>
-          <p class="text-muted small">
-            Objectif : expliquer les écarts de scores PISA entre pays et prédire les scores pour pays non testés.
-            Le modèle final (log PISA) explique ~74% de la variance. PIB/habitant et sous-alimentation sont des facteurs majeurs.
-          </p>
+          <p class="text-muted small">Objectif : expliquer les écarts de scores PISA entre pays et prédire les scores pour pays non testés. Modèle (log PISA) : R² ≈ 0.717. PIB/hab & sous-alimentation sont déterminants.</p>
         </div>
       </div>
     </section>
 
-    <!-- Compétences -->
     <section class="card-custom">
       <h2>Compétences mobilisées</h2>
       <ul class="text-muted">
-        <li>Collecte & nettoyage de données (OCDE, Banque mondiale)</li>
-        <li>Analyse exploratoire et data visualisation (ggplot2, cartographie)</li>
-        <li>Modélisation économétrique : régressions linéaires, log-transformations, tests d'interaction (R)</li>
-        <li>Interprétation critique des indicateurs internationaux (biais PISA)</li>
+        <li>Collecte & nettoyage (OCDE, Banque mondiale)</li>
+        <li>Exploration & data viz (ggplot2, plotly, cartographie)</li>
+        <li>Économétrie : régressions, interactions, diagnostics (R)</li>
+        <li>Lecture critique d’indicateurs internationaux</li>
       </ul>
     </section>
 
-    <!-- Cartes -->
     <section class="card-custom">
       <h2>Cartes — Scores observés & Prédictions</h2>
-      <p class="text-muted">
-        Ci-dessous : 1) carte des scores PISA observés (pays testés) — 2) carte des prédictions (pays non testés) avec intervalles de confiance.
-      </p>
+      <p class="text-muted">1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.</p>
       <div class="row">
         <div class="col-md-6">
           <div class="visual-container">
-            <p class="text-muted">[Carte des scores PISA observés]</p>
-              <div class="section-card">
-                 <iframe src="assets/Carte_PISA_interactive.html"
-                        style="width:100%; height:600px; border:none; border-radius:8px; overflow:hidden;"
-                        title="Carte interactive PISA"></iframe>
-                <p class="small-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
+            <!-- iframe pour la carte interactive -->
+            <iframe src="assets/Carte_PISA_interactive.html"
+                    style="width:100%; height:600px; border:none; border-radius:8px; overflow:hidden;"
+                    title="Carte interactive PISA"></iframe>
           </div>
-          <p class="small text-muted">Survolez un pays pour voir son score PISA et sa catégorie.</p>
+          <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
         </div>
         <div class="col-md-6">
           <div class="visual-container">
-            <p class="text-muted">[Carte des prédictions PISA]</p>
-            <!-- Remplace par ton image :
-            <img src="assets/pisa_map_pred.png" style="width:100%; height:100%; object-fit:contain;" alt="Carte des prédictions PISA">
-            -->
+            <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
           </div>
           <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
         </div>
       </div>
     </section>
 
-    <!-- Variables et corrélation -->
     <section class="card-custom">
-      <h2>Variables expliquées & analyse de corrélation</h2>
+      <h2>Variables retenues & corrélations (sens)</h2>
       <p class="text-muted">Variables retenues :</p>
       <ul class="text-muted">
-        <li>PIB par habitant (log)</li>
-        <li>Part du PIB consacrée à l'éducation (%)</li>
-        <li>Ratio élèves / enseignant</li>
-        <li>Taux de scolarisation en maternelle</li>
-        <li>Taux de scolarisation en primaire</li>
-        <li>Taux de sous-alimentation</li>
-        <li>Appartenance à l'OCDE (dummy)</li>
+        <li>PIB par habitant (log) — <strong>corrélé positivement</strong> (+)</li>
+        <li>Part du PIB consacrée à l'éducation (%) — <strong>corrélation mitigée / interprétation prudente</strong></li>
+        <li>Ratio élèves / enseignant — <strong>corrélé négativement</strong> (–)</li>
+        <li>Taux de scolarisation en maternelle — <strong>corrélé positivement</strong> (+)</li>
+        <li>Taux de scolarisation en primaire — <strong>corrélé positivement</strong> (+, effet moindre)</li>
+        <li>Taux de sous-alimentation — <strong>corrélé négativement</strong> (–)</li>
+        <li>Appartenance à l'OCDE (dummy) — <strong>corrélé positivement</strong> (+)</li>
       </ul>
-      <h5 class="mt-3">Corrélations marquantes :</h5>
+
+      <h5 class="mt-3">Corrélations marquantes (valeurs)</h5>
       <ul class="text-muted">
-        <li>Corr(PIB/hab, score PISA) ≈ 0.76</li>
-        <li>Corr(scolarisation maternelle, score PISA) ≈ 0.58</li>
+        <li>Corr(PIB/hab, score PISA) ≈ 0.76 — corrélation positive forte.</li>
+        <li>Corr(scolarisation maternelle, score PISA) ≈ 0.58 — corrélation positive modérée.</li>
       </ul>
-      <div class="visual-container" style="height: 250px;">
-        <p class="text-muted">[Matrice de corrélation]</p>
-        <!-- Remplace par ton image :
-        <img src="assets/pisa_corr_matrix.png" style="width:100%; height:100%; object-fit:contain;" alt="Matrice de corrélation">
-        -->
-      </div>
+
     </section>
 
-    <!-- Régression linéaire -->
     <section class="card-custom">
-      <h2>Régression linéaire — Modèle final</h2>
-      <p class="text-muted">
-        Modèle retenu (après comparaisons & transformations) :
-      </p>
-      <pre>
-ln_PISA = β0 + β1 * dépense_éducation + β2 * ln(PIB/hab) + β3 * scolarisation_primaire
-      + β4 * sous_alimentation + β5 * OCDE + β6 * (scolarisation_maternelle : OCDE) + ε
-      </pre>
+      <h2>Régression linéaire — Modèle final (synthèse)</h2>
+      <p class="text-muted">Forme retenue :</p>
+      <pre>ln_PISA = β0 + β1 * dépense_éducation + β2 * ln(PIB/hab) + β3 * scolarisation_primaire
+      + β4 * sous_alimentation + β5 * OCDE + β6 * (scolarisation_maternelle : OCDE) + ε</pre>
+
       <p class="text-muted">Points clés :</p>
       <ul class="text-muted">
-        <li>Le modèle explique ~74% de la variance (R² ajusté ≈ 0.717).</li>
-        <li>PIB/habitant (log) a un effet positif fort ; sous-alimentation a un effet négatif.</li>
-        <li>Effet d'interaction : l'impact de la scolarisation maternelle est plus fort hors OCDE.</li>
+        <li>R² ajusté ≈ 0.717 (≈ 74% de variance expliquée).</li>
+        <li>PIB/hab (log) : effet positif robuste.</li>
+        <li>Sous-alimentation : effet négatif significatif.</li>
+        <li>Interaction : la scolarisation maternelle a un effet plus fort hors OCDE.</li>
       </ul>
-      <div class="visual-container" style="height: 200px;">
-        <p class="text-muted">[Table des coefficients]</p>
-        <!-- Remplace par ton image :
-        <img src="assets/pisa_regression_table.png" style="width:100%; height:100%; object-fit:contain;" alt="Table des coefficients">
-        -->
-      </div>
     </section>
 
-    <!-- Prédictions -->
     <section class="card-custom">
       <h2>Prédictions & intervalles de confiance</h2>
-      <p class="text-muted">
-        Prédictions pour 71 pays non testés :
-      </p>
-      <ul class="text-muted">
-        <li>Carte des prédictions (ci-dessus).</li>
-        <li>Visualisation de l'incertitude (largeur de l'intervalle de confiance).</li>
-      </ul>
+      <p class="text-muted">Prédictions effectuées pour 71 pays non testés ; attention aux largeurs d'IC (plus larges pour l'Afrique).</p>
       <div class="row">
         <div class="col-md-6">
-          <div class="visual-container" style="height: 250px;">
-            <p class="text-muted">[Prédictions et intervalles]</p>
-            <!-- Remplace par ton image :
-            <img src="assets/pisa_pred_points_ci.png" style="width:100%; height:100%; object-fit:contain;" alt="Prédictions et intervalles">
-            -->
+          <div class="visual-container" style="height:250px;">
+            <p class="text-muted">[Prédictions + barres d'erreur — remplace par image]</p>
           </div>
           <p class="small text-muted">Exemples : Zimbabwe, Libéria (forte incertitude).</p>
         </div>
         <div class="col-md-6">
-          <div class="visual-container" style="height: 250px;">
-            <p class="text-muted">[Carte d'incertitude]</p>
-            <!-- Remplace par ton image :
-            <img src="assets/pisa_uncertainty_map.png" style="width:100%; height:100%; object-fit:contain;" alt="Carte d'incertitude">
-            -->
+          <div class="visual-container" style="height:250px;">
+            <p class="text-muted">[Carte d'incertitude — remplace par image]</p>
           </div>
-          <p class="small text-muted">Plus la nuance est rouge, plus l'intervalle est large.</p>
+          <p class="small text-muted">Plus la nuance est rouge, plus l'IC est large.</p>
         </div>
       </div>
     </section>
 
-    <!-- Notes techniques -->
-    <section class="card-custom">
-      <h2>Notes d’intégration</h2>
-      <p class="text-muted">
-        Pour insérer tes visuels :
-      </p>
-      <ol class="text-muted">
-        <li>Exporte les images depuis R (PNG/SVG) et place-les dans <code>assets/</code>.</li>
-        <li>Pour les cartes interactives, utilise un <code>&lt;iframe&gt;</code>.</li>
-        <li>Noms recommandés : <code>pisa_map_observed.png</code>, <code>pisa_map_pred.png</code>, etc.</li>
-      </ol>
-    </section>
-
-    <!-- Footer -->
     <footer>
       <small>© Éloïse Sibottier — Analyse PISA</small>
     </footer>
