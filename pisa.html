@@ -114,11 +114,19 @@
 
           <!-- Légende séparée -->
           <iframe
+            id="legend-iframe"
             src="assets/legend_pisa.html"
-            style="width: 100%; max-width: 900px; height: 80px; border: none; border-radius: 8px; background: transparent;"
+            style="width: 100%; max-width: 900px; border: none; border-radius: 8px; background: transparent;"
             title="Légende PISA"
             loading="lazy"
           ></iframe>
+          
+          <script>
+            const iframe = document.getElementById('legend-iframe');
+            iframe.onload = function() {
+              iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+            };
+          </script>
 
         </div>
       </div>
