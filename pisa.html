@@ -92,40 +92,49 @@
     </section>
 
     <section class="card-custom">
-      <h2>Cartes — Scores observés & Prédictions</h2>
-      <p class="text-muted">1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.</p>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="visual-container">
-            <!-- iframe pour la carte interactive -->
-            <!-- Conteneur carte + légende -->
-              <div style="width:100%; max-width:1200px; margin:0 auto;">
+        <h2>Cartes — Scores observés & Prédictions</h2>
+        <p class="text-muted">1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.</p>
+        <div class="row">
+          <!-- Carte des scores PISA -->
+          <div class="col-md-6">
+            <div class="visual-container" style="padding: 0; margin: 0;">
+              <!-- Conteneur carte + légende -->
+              <div style="width: 100%; max-width: 1200px; margin: 0 auto; padding: 0;">
                 <!-- Carte interactive (sans légende) -->
-                <div <div style="width:100%; max-width:1200px; margin:0 auto;">
-                  <iframe src="assets/Carte_PISA_nolegend.html"
-                        style="width:100%; height:720px; border:0; display:block; margin:0; padding:0;"
-                        title="Carte interactive PISA" loading="lazy"></iframe>
+                <div style="width: 100%; margin: 0; padding: 0;">
+                  <iframe
+                    src="assets/Carte_PISA_nolegend.html"
+                    style="width: 100%; height: 600px; border: none; display: block; margin: 0; padding: 0;"
+                    title="Carte interactive PISA"
+                    loading="lazy"
+                  ></iframe>
                 </div>
-              
-                <!-- Légende séparée en iframe (hauteur faible) -->
-                <div style="width:100%; margin-top:8px; display:flex; justify-content:center;">
-                  <h3>Score PISA</h3>
-                    <iframe src="assets/legend_pisa.html"
-                            style="width:100%; max-width:900px; height:80px; border:0; border-radius:8px; background:transparent;"
-                            title="Légende PISA" loading="lazy"></iframe>
+      
+                <!-- Légende séparée -->
+                <div style="width: 100%; margin-top: 8px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                  <h3 style="margin: 4px 0;">Score PISA</h3>
+                  <iframe
+                    src="assets/legend_pisa.html"
+                    style="width: 100%; max-width: 900px; height: 80px; border: none; border-radius: 8px; background: transparent; margin: 0; padding: 0;"
+                    title="Légende PISA"
+                    loading="lazy"
+                  ></iframe>
                 </div>
               </div>
+            </div>
+            <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
           </div>
-          <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
-        </div>
-        <div class="col-md-6">
-          <div class="visual-container">
-            <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
+      
+          <!-- Carte des prédictions -->
+          <div class="col-md-6">
+            <div class="visual-container">
+              <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
+            </div>
+            <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
           </div>
-          <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
         </div>
-      </div>
-    </section>
+      </section>
+
 
     <section class="card-custom">
       <h2>Variables retenues & corrélations (sens)</h2>
