@@ -245,31 +245,112 @@
       } catch(e){}
     });
   </script>
-</section>
+      
+          </section>
+          
+          <section class="card-custom">
+            <h2>Variables retenues & corrélations</h2>
+          
+            <!-- Boîte des corrélations marquantes -->
+            <div class="highlight-box mb-4 p-3" style="background-color: #e9f7fe; border-left: 4px solid #007bff; border-radius: 5px;">
+              <h5>Corrélations marquantes</h5>
+              <div class="d-flex flex-column gap-2">
+                <div><span>💰 PIB/habitant :</span> <strong>+0.76 (forte)</strong></div>
+                <div><span>🎓 Scolarisation maternelle :</span> <strong>+0.58 (modérée)</strong></div>
+              </div>
+            </div>
+          
+            <!-- Légende -->
+            <div class="d-flex gap-3 mb-4">
+              <div class="d-flex align-items-center gap-1"><span style="width:12px; height:12px; background-color:#28a745; border-radius:50%; display:inline-block;"></span> Corrélation positive</div>
+              <div class="d-flex align-items-center gap-1"><span style="width:12px; height:12px; background-color:#dc3545; border-radius:50%; display:inline-block;"></span> Corrélation négative</div>
+              <div class="d-flex align-items-center gap-1"><span style="width:12px; height:12px; background-color:#ffc107; border-radius:50%; display:inline-block;"></span> Corrélation mitigée</div>
+            </div>
+          
+            <!-- Grille des variables -->
+            <div class="row g-3">
+              <div class="col-md-6 col-lg-4">
+                <div class="p-3 h-100" style="border-left: 4px solid #28a745; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <h6 class="mb-2">💰 PIB par habitant (log)</h6>
+                  <p class="mb-0"><strong>Corrélation :</strong> +0.76 (forte)</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-3 h-100" style="border-left: 4px solid #ffc107; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <h6 class="mb-2">📊 Part du PIB consacrée à l'éducation (%)</h6>
+                  <p class="mb-0"><strong>Corrélation :</strong> mitigée</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-3 h-100" style="border-left: 4px solid #dc3545; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <h6 class="mb-2">👨‍🏫 Ratio élèves / enseignant</h6>
+                  <p class="mb-0"><strong>Corrélation :</strong> négative</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-3 h-100" style="border-left: 4px solid #28a745; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <h6 class="mb-2">🧒 Taux de scolarisation en maternelle</h6>
+                  <p class="mb-0"><strong>Corrélation :</strong> +0.58 (modérée)</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-3 h-100" style="border-left: 4px solid #28a745; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <h6 class="mb-2">📚 Taux de scolarisation en primaire</h6>
+                  <p class="mb-0"><strong>Corrélation :</strong> positive (effet moindre)</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-3 h-100" style="border-left: 4px solid #dc3545; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <h6 class="mb-2">🍞 Taux de sous-alimentation</h6>
+                  <p class="mb-0"><strong>Corrélation :</strong> négative</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <div class="p-3 h-100" style="border-left: 4px solid #28a745; background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                  <h6 class="mb-2">🌍 Appartenance à l'OCDE (dummy)</h6>
+                  <p class="mb-0"><strong>Corrélation :</strong> positive</p>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Graphique -->
+            <div class="mt-4 p-3" style="background-color: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+              <h5>Visualisation des corrélations</h5>
+              <canvas id="correlationChart" height="200"></canvas>
+            </div>
+          
+            <!-- Script pour le graphique -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const ctx = document.getElementById('correlationChart').getContext('2d');
+                new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                    labels: ['PIB/hab', 'Scolarisation maternelle', 'Ratio élèves/enseignant', 'Scolarisation primaire', 'Sous-alimentation', 'OCDE'],
+                    datasets: [{
+                      label: 'Corrélation avec le score PISA',
+                      data: [0.76, 0.58, -0.5, 0.3, -0.4, 0.6],
+                      backgroundColor: [
+                        '#28a745', '#28a745', '#dc3545', '#28a745', '#dc3545', '#28a745'
+                      ],
+                      borderWidth: 1
+                    }]
+                  },
+                  options: {
+                    responsive: true,
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Valeur de corrélation' }
+                      }
+                    }
+                  }
+                });
+              });
+            </script>
+          </section>
 
-
-
-
-    <section class="card-custom">
-      <h2>Variables retenues & corrélations (sens)</h2>
-      <p class="text-muted">Variables retenues :</p>
-      <ul class="text-muted">
-        <li>PIB par habitant (log) — <strong>corrélé positivement</strong> (+)</li>
-        <li>Part du PIB consacrée à l'éducation (%) — <strong>corrélation mitigée / interprétation prudente</strong></li>
-        <li>Ratio élèves / enseignant — <strong>corrélé négativement</strong> (–)</li>
-        <li>Taux de scolarisation en maternelle — <strong>corrélé positivement</strong> (+)</li>
-        <li>Taux de scolarisation en primaire — <strong>corrélé positivement</strong> (+, effet moindre)</li>
-        <li>Taux de sous-alimentation — <strong>corrélé négativement</strong> (–)</li>
-        <li>Appartenance à l'OCDE (dummy) — <strong>corrélé positivement</strong> (+)</li>
-      </ul>
-
-      <h5 class="mt-3">Corrélations marquantes (valeurs)</h5>
-      <ul class="text-muted">
-        <li>Corr(PIB/hab, score PISA) ≈ 0.76 — corrélation positive forte.</li>
-        <li>Corr(scolarisation maternelle, score PISA) ≈ 0.58 — corrélation positive modérée.</li>
-      </ul>
-
-    </section>
 
     <section class="card-custom">
       <h2>Régression linéaire — Modèle final (synthèse)</h2>
