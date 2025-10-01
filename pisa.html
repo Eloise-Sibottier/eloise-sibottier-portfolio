@@ -173,32 +173,92 @@
       </div>
     </section>
 
-    <!-- Map + legend -->
     <section class="card-custom">
-      <h2>Cartographie interactive</h2>
-
-      <div class="mb-3">
-        <iframe
-          id="map-iframe"
-          src="assets/Carte_PISA_nolegend.html"
-          style="width:100%; border:none; display:block; background:transparent;"
-          title="Carte interactive PISA"
-          loading="lazy"
-          sandbox="allow-scripts allow-same-origin allow-forms"
-        ></iframe>
+      <h2>Cartes — Scores observés & Prédictions</h2>
+      <p class="text-muted">
+        1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.
+      </p>
+    
+      <div class="row">
+        <div class="col-md-6">
+          <div class="visual-container" style="padding: 0; margin: 0;">
+            <div style="width:100%; max-width:1200px; margin:0 auto; padding:0; display:flex; flex-direction:column; gap:0;">
+    
+              <!-- map iframe -->
+              <iframe
+                id="map-iframe"
+                src="assets/Carte_PISA_nolegend.html"
+                style="width:100%; height:400px; border:none; display:block; background:transparent;"
+                title="Carte interactive PISA"
+                loading="lazy"></iframe>
+    
+              <!-- legend iframe -->
+              <iframe
+                id="legend-iframe"
+                src="assets/legend_pisa.html"
+                style="width:100%; max-width:900px; border:none; display:block; background:transparent;"
+                title="Légende PISA"
+                loading="lazy"></iframe>
+    
+            </div>
+          </div>
+          <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
+        </div>
+    
+        <div class="col-md-6">
+          <div class="visual-container" style="padding: 0; margin: 0;">
+            <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
+          </div>
+          <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
+        </div>
       </div>
-
-      <div class="mb-3">
-        <iframe
-          id="legend-iframe"
-          src="assets/legend_pisa.html"
-          style="width:100%; max-width:900px; border:none; display:block; background:transparent;"
-          title="Légende PISA"
-          loading="lazy"></iframe>
-      </div>
-
-      <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
+    
+      <script>
+        // fonction robuste pour fixer la hauteur d'un iframe (évite la scrollbar)
+        function setIframeHeight(iframe){
+          try{
+            const doc = iframe.contentWindow.document;
+            const h = Math.max(
+              doc.documentElement.scrollHeight, doc.documentElement.offsetHeight,
+              doc.body.scrollHeight, doc.body.offsetHeight
+            );
+            // small extra (2-6px) to avoid fractional scrollbar
+            iframe.style.height = (h + 4) + 'px';
+            iframe.style.overflow = 'hidden';
+          } catch(e){
+            console.warn('Impossible d\'accéder au contenu iframe (cross-origin?)', e);
+          }
+        }
+    
+        const legend = document.getElementById('legend-iframe');
+        const mapIf = document.getElementById('map-iframe');
+    
+        // quand l'iframe de la légende est chargée
+        legend.addEventListener('load', function(){ setIframeHeight(legend); });
+    
+        // fallback : recevoir la hauteur postMessage envoyée par legend_pisa.html
+        window.addEventListener('message', function(ev){
+          if(ev && ev.data && ev.data.type === 'legend-height'){
+            legend.style.height = (ev.data.height + 4) + 'px';
+          }
+        });
+    
+        // pour la map : si tu veux auto-size (optionnel) on peut aussi ajuster :
+        mapIf.addEventListener('load', function(){
+          // si ta carte a une hauteur fixe (ex: layout(height=400) en R), tu peux laisser telle quelle.
+          // sinon, tenter un ajustement similaire (attention au rendu Leaflet/Plotly).
+          try {
+            // remove accidental margins inside the saved widget
+            const md = mapIf.contentWindow.document;
+            md.documentElement.style.margin = 0;
+            md.body.style.margin = 0;
+            // optional: remove padding too
+            md.body.style.padding = 0;
+          } catch(e){}
+        });
+      </script>
     </section>
+
 
     <!-- Visuels prédictions -->
     <section class="card-custom">
