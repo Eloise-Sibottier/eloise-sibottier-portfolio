@@ -34,7 +34,6 @@
       #map-iframe { height: 400px; }
     }
     #map-iframe, #legend-iframe { overflow: hidden; -webkit-overflow-scrolling: touch; }
-    /* ensure the chart canvas container has a fixed min-height for Chart.js maintainAspectRatio=false */
     .chart-wrap { width:100%; max-width:900px; margin:0 auto; min-height:180px; height:180px; }
   </style>
 </head>
@@ -106,18 +105,24 @@
     <section class="card-custom">
       <h2>Variables retenues & corrélations</h2>
 
-      <!-- Boîte des corrélations marquantes -->
-      <div class="highlight-box mb-4 p-3" style="background-color: #eef9ff; border-left: 4px solid #007bff; border-radius: 6px;">
-        <h5 style="margin-bottom:0.5rem;">Corrélations marquantes</h5>
-        <div style="font-size:0.95rem;">
-          <div><strong>PIB par habitant (log) :</strong> +0.76 (forte)</div>
-          <div><strong>Sous-alimentation :</strong> -0.59 (forte)</div>
+      <!-- Légende -->
+      <div class="d-flex gap-3 mb-3" role="list" aria-label="Légende corrélations" style="flex-wrap:wrap;">
+        <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
+          <span style="width:12px; height:12px; background-color:#28a745; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
+          Corrélation positive (≥ 0.50)
+        </div>
+        <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
+          <span style="width:12px; height:12px; background-color:#dc3545; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
+          Corrélation négative (≤ -0.50)
+        </div>
+        <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
+          <span style="width:12px; height:12px; background-color:#ffc107; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
+          Corrélation mitigée (|r| &lt; 0.50)
         </div>
       </div>
 
-      <!-- Légende -->
+      <!-- Regroupement des variables par catégorie -->
       <div class="row g-3">
-        <!-- Corrélations positives -->
         <div class="col-12 col-md-4">
           <div class="p-3 h-100" style="background:#fff; border-left: 4px solid #28a745; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
             <h6 class="mb-2" style="font-weight:600;">Corrélations positives (≥ 0.50)</h6>
@@ -127,7 +132,6 @@
             </ul>
           </div>
         </div>
-        <!-- Corrélations mitigées -->
         <div class="col-12 col-md-4">
           <div class="p-3 h-100" style="background:#fff; border-left: 4px solid #ffc107; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
             <h6 class="mb-2" style="font-weight:600;">Corrélations mitigées (&lt; 0.50)</h6>
@@ -137,7 +141,6 @@
             </ul>
           </div>
         </div>
-        <!-- Corrélations négatives -->
         <div class="col-12 col-md-4">
           <div class="p-3 h-100" style="background:#fff; border-left: 4px solid #dc3545; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
             <h6 class="mb-2" style="font-weight:600;">Corrélations négatives (≤ -0.50)</h6>
@@ -158,163 +161,30 @@
       </div>
     </section>
 
-         <section class="card-custom">
-        <h2>Cartes — Scores observés & Prédictions</h2>
-        <p class="text-muted">
-          1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.
-        </p>
-      
-        <div class="row">
-          <div class="col-md-6">
-            <div class="visual-container" style="padding: 0; margin: 0;">
-              <div style="width:100%; max-width:1200px; margin:0 auto; padding:0; display:flex; flex-direction:column; gap:0;">
-      
-                <!-- ---------- Responsive map iframe (mobile friendly) ---------- -->
-                  <style>
-                    /* mobile break: adjust map height */
-                    @media (max-width: 768px) {
-                      /* make the map take a good portion of viewport on phones/tablets */
-                      #map-iframe {
-                        height: 65vh !important; /* fallback if JS absent */
-                        min-height: 320px;
-                      }
-                      /* keep legend directly below without extra gap */
-                      #legend-iframe { margin-top: 6px; }
-                    }
-                  
-                    /* Desktop fallback: keep fixed height or inherited */
-                    @media (min-width: 769px) {
-                      #map-iframe { height: 400px; }
-                    }
-                  
-                    /* Ensure no scrollbars inside iframes */
-                    #map-iframe, #legend-iframe {
-                      overflow: hidden;
-                      -webkit-overflow-scrolling: touch;
-                    }
-                  </style>
-                  
-                  <iframe
-                    id="map-iframe"
-                    src="assets/Carte_PISA_nolegend.html"
-                    style="width:100%; border:none; display:block; background:transparent;"
-                    title="Carte interactive PISA"
-                    loading="lazy"
-                    sandbox="allow-scripts allow-same-origin allow-forms"
-                  ></iframe>
-                  
-                  <script>
-                    (function(){
-                      const mapIf = document.getElementById('map-iframe');
-                  
-                      // Fonction pour fixer une hauteur mobile proportionnelle à la fenêtre
-                      function adjustMapHeight() {
-                        try {
-                          const w = window.innerWidth;
-                          const h = window.innerHeight;
-                  
-                          // Si écran petit (mobile), on prend 65% de la hauteur viewport
-                          if (w <= 768) {
-                            const target = Math.max(320, Math.round(h * 0.65)); // au moins 320px
-                            mapIf.style.height = target + 'px';
-                          } else {
-                            // Desktop : garder la hauteur fixe ou celle définie par CSS (400px)
-                            mapIf.style.height = '';
-                          }
-                  
-                          // On essaie aussi de supprimer marges internes si possible
-                          try {
-                            const doc = mapIf.contentWindow.document;
-                            doc.documentElement.style.margin = 0;
-                            doc.body.style.margin = 0;
-                            doc.body.style.padding = 0;
-                          } catch(e){ /* cross-origin possible, ignore */ }
-                        } catch(e){
-                          console.warn('adjustMapHeight error', e);
-                        }
-                      }
-                  
-                      // Ajuster au chargement et sur redimension / rotation
-                      mapIf.addEventListener('load', adjustMapHeight);
-                      window.addEventListener('resize', adjustMapHeight);
-                      window.addEventListener('orientationchange', function(){
-                        // petit délai pour que innerHeight soit mis à jour sur iOS
-                        setTimeout(adjustMapHeight, 200);
-                      });
-                  
-                      // appel initial
-                      adjustMapHeight();
-                    })();
-                  </script>
-      
-                <!-- legend iframe -->
-                <iframe
-                  id="legend-iframe"
-                  src="assets/legend_pisa.html"
-                  style="width:100%; max-width:900px; border:none; display:block; background:transparent;"
-                  title="Légende PISA"
-                  loading="lazy"></iframe>
-      
-              </div>
+    <!-- Cartes -->
+    <section class="card-custom">
+      <h2>Cartes — Scores observés & Prédictions</h2>
+      <p class="text-muted">1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="visual-container" style="padding: 0; margin: 0;">
+            <div style="width:100%; max-width:1200px; margin:0 auto; padding:0; display:flex; flex-direction:column; gap:0;">
+              <iframe id="map-iframe" src="assets/Carte_PISA_nolegend.html" style="width:100%; border:none; display:block; background:transparent;" title="Carte interactive PISA" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+              <iframe id="legend-iframe" src="assets/legend_pisa.html" style="width:100%; max-width:900px; border:none; display:block; background:transparent;" title="Légende PISA" loading="lazy"></iframe>
             </div>
-            <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
           </div>
-      
-          <div class="col-md-6">
-            <div class="visual-container" style="padding: 0; margin: 0;">
-              <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
-            </div>
-            <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
-          </div>
+          <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
         </div>
-      
-        <script>
-          // fonction robuste pour fixer la hauteur d'un iframe (évite la scrollbar)
-          function setIframeHeight(iframe){
-            try{
-              const doc = iframe.contentWindow.document;
-              const h = Math.max(
-                doc.documentElement.scrollHeight, doc.documentElement.offsetHeight,
-                doc.body.scrollHeight, doc.body.offsetHeight
-              );
-              // small extra (2-6px) to avoid fractional scrollbar
-              iframe.style.height = (h + 4) + 'px';
-              iframe.style.overflow = 'hidden';
-            } catch(e){
-              console.warn('Impossible d\'accéder au contenu iframe (cross-origin?)', e);
-            }
-          }
-      
-          const legend = document.getElementById('legend-iframe');
-          const mapIf = document.getElementById('map-iframe');
-      
-          // quand l'iframe de la légende est chargée
-          legend.addEventListener('load', function(){ setIframeHeight(legend); });
-      
-          // fallback : recevoir la hauteur postMessage envoyée par legend_pisa.html
-          window.addEventListener('message', function(ev){
-            if(ev && ev.data && ev.data.type === 'legend-height'){
-              legend.style.height = (ev.data.height + 4) + 'px';
-            }
-          });
-      
-          // pour la map : si tu veux auto-size (optionnel) on peut aussi ajuster :
-          mapIf.addEventListener('load', function(){
-            // si ta carte a une hauteur fixe (ex: layout(height=400) en R), tu peux laisser telle quelle.
-            // sinon, tenter un ajustement similaire (attention au rendu Leaflet/Plotly).
-            try {
-              // remove accidental margins inside the saved widget
-              const md = mapIf.contentWindow.document;
-              md.documentElement.style.margin = 0;
-              md.body.style.margin = 0;
-              // optional: remove padding too
-              md.body.style.padding = 0;
-            } catch(e){}
-          });
-        </script>
-      </section>
+        <div class="col-md-6">
+          <div class="visual-container" style="padding: 0; margin: 0;">
+            <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
+          </div>
+          <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
+        </div>
+      </div>
+    </section>
 
-    <!-- Visuels prédictions -->
+    <!-- Prédictions -->
     <section class="card-custom">
       <h2>Prédictions & intervalles de confiance</h2>
       <p class="text-muted">Prédictions effectuées pour 71 pays non testés ; attention aux largeurs d'IC (plus larges pour l'Afrique).</p>
@@ -334,13 +204,12 @@
       </div>
     </section>
 
-    <!-- Régression synthèse -->
+    <!-- Régression -->
     <section class="card-custom">
       <h2>Régression linéaire — Modèle final (synthèse)</h2>
       <p class="text-muted">Forme retenue :</p>
       <pre style="white-space:pre-wrap;">ln_PISA = β0 + β1 * dépense_éducation + β2 * ln(PIB/hab) + β3 * scolarisation_primaire
 + β4 * sous_alimentation + β5 * OCDE + β6 * (scolarisation_maternelle : OCDE) + ε</pre>
-
       <p class="text-muted">Points clés :</p>
       <ul class="text-muted">
         <li>R² ajusté ≈ 0.717 (≈ 74% de variance expliquée).</li>
@@ -355,12 +224,11 @@
     </footer>
   </main>
 
-  <!-- Scripts: Chart.js, Bootstrap, + scripts custom -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
-    // Chart des corrélations (valeurs issues de R)
+    // Chart des corrélations
     (function() {
       document.addEventListener('DOMContentLoaded', function() {
         const labels = [
@@ -372,20 +240,15 @@
           'Sous alimentation'
         ];
         const values = [0.3416842, -0.5797436, 0.7568850, 0.5836792, 0.3261518, -0.5902695];
-
         const colors = values.map(v => {
           if (v >= 0.50) return '#28a745';
           if (v <= -0.50) return '#dc3545';
           return '#ffc107';
         });
-
         const ctx = document.getElementById('correlationChart').getContext('2d');
-
-        // destroy previous chart instance if re-initialized (defensive)
         if (window.__correlationChart && window.__correlationChart.destroy) {
           window.__correlationChart.destroy();
         }
-
         window.__correlationChart = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -422,7 +285,7 @@
       });
     })();
 
-    // Scripts pour iframes (ajustement de hauteur et postMessage handling)
+    // Scripts pour iframes
     (function(){
       function setIframeHeight(iframe){
         try{
@@ -433,21 +296,13 @@
           );
           iframe.style.height = (h + 4) + 'px';
           iframe.style.overflow = 'hidden';
-        } catch(e){
-          // cross-origin possible -> ignore silently
-          // console.warn('Impossible d\'accéder au contenu iframe (cross-origin?)', e);
-        }
+        } catch(e){}
       }
-
       const legend = document.getElementById('legend-iframe');
       const mapIf = document.getElementById('map-iframe');
-
-      if (legend) {
-        legend.addEventListener('load', function(){ setIframeHeight(legend); });
-      }
+      if (legend) legend.addEventListener('load', function(){ setIframeHeight(legend); });
       if (mapIf) {
         mapIf.addEventListener('load', function(){
-          // tentative de nettoyage des marges internes
           try {
             const md = mapIf.contentWindow.document;
             md.documentElement.style.margin = 0;
@@ -456,15 +311,11 @@
           } catch(e){}
         });
       }
-
-      // réception d'un postMessage optionnel depuis legend_pisa.html
       window.addEventListener('message', function(ev){
         if(ev && ev.data && ev.data.type === 'legend-height' && legend){
           legend.style.height = (ev.data.height + 4) + 'px';
         }
       });
-
-      // adapter la hauteur au redimensionnement / orientation
       function adjustMapHeight() {
         try {
           const w = window.innerWidth;
@@ -479,7 +330,6 @@
           }
         } catch(e){}
       }
-
       window.addEventListener('resize', adjustMapHeight);
       window.addEventListener('orientationchange', function(){ setTimeout(adjustMapHeight, 200); });
       window.addEventListener('load', adjustMapHeight);
@@ -488,4 +338,5 @@
   </script>
 </body>
 </html>
+
 
