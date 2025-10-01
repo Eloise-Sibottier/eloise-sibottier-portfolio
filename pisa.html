@@ -165,22 +165,7 @@
             </div>
           </div>
         
-          <!-- Régression synthèse (inchangé) -->
-          <section class="card-custom mt-3">
-            <h2>Régression linéaire — Modèle final (synthèse)</h2>
-            <p class="text-muted">Forme retenue :</p>
-            <pre style="white-space:pre-wrap;">ln_PISA = β0 + β1 * dépense_éducation + β2 * ln(PIB/hab) + β3 * scolarisation_primaire
-        + β4 * sous_alimentation + β5 * OCDE + β6 * (scolarisation_maternelle : OCDE) + ε</pre>
-        
-            <p class="text-muted">Points clés :</p>
-            <ul class="text-muted">
-              <li>R² ajusté ≈ 0.717 (≈ 74% de variance expliquée).</li>
-              <li>PIB/hab (log) : effet positif robuste.</li>
-              <li>Sous-alimentation : effet négatif significatif.</li>
-              <li>Interaction : la scolarisation maternelle a un effet plus fort hors OCDE.</li>
-            </ul>
-          </section>
-        
+                 
           <!-- Chart.js -->
           <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
           <script>
@@ -388,6 +373,22 @@
       } catch(e){}
     });
   </script>
+
+    <!-- Régression synthèse (inchangé) -->
+          <section class="card-custom mt-3">
+            <h2>Régression linéaire — Modèle final (synthèse)</h2>
+            <p class="text-muted">Forme retenue :</p>
+            <pre style="white-space:pre-wrap;">ln_PISA = β0 + β1 * dépense_éducation + β2 * ln(PIB/hab) + β3 * scolarisation_primaire
+        + β4 * sous_alimentation + β5 * OCDE + β6 * (scolarisation_maternelle : OCDE) + ε</pre>
+        
+            <p class="text-muted">Points clés :</p>
+            <ul class="text-muted">
+              <li>R² ajusté ≈ 0.717 (≈ 74% de variance expliquée).</li>
+              <li>PIB/hab (log) : effet positif robuste.</li>
+              <li>Sous-alimentation : effet négatif significatif.</li>
+              <li>Interaction : la scolarisation maternelle a un effet plus fort hors OCDE.</li>
+            </ul>
+          </section>
       
     <section class="card-custom">
       <h2>Prédictions & intervalles de confiance</h2>
