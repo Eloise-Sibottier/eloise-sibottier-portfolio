@@ -92,173 +92,158 @@
     </section>
 
 
-    <section class="card-custom">
-  <h2>Variables retenues & corrélations</h2>
-
-  <!-- Boîte des corrélations marquantes -->
-  <div class="highlight-box mb-4 p-3" style="background-color: #eef9ff; border-left: 4px solid #007bff; border-radius: 6px;">
-    <h5 style="margin-bottom:0.5rem;">Corrélations marquantes</h5>
-    <div class="d-flex flex-column gap-2" style="font-size:0.95rem;">
-      <div><strong>PIB par habitant :</strong> +0.76 (forte)</div>
-      <div><strong>Scolarisation maternelle :</strong> +0.58 (modérée)</div>
-    </div>
-  </div>
-
-  <!-- Légende (simple) -->
-  <div class="d-flex gap-3 mb-3" role="list" aria-label="Légende corrélations" style="flex-wrap:wrap;">
-    <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
-      <span style="width:12px; height:12px; background-color:#28a745; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
-      Corrélation positive
-    </div>
-    <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
-      <span style="width:12px; height:12px; background-color:#dc3545; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
-      Corrélation négative
-    </div>
-    <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
-      <span style="width:12px; height:12px; background-color:#ffc107; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
-      Corrélation mitigée
-    </div>
-  </div>
-
-  <!-- Regroupement des variables par catégorie -->
-  <div class="row g-3">
-    <!-- Positives -->
-    <div class="col-12 col-md-4">
-      <div class="p-3 h-100" style="background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
-        <h6 class="mb-2" style="font-weight:600;">Corrélations positives</h6>
-        <ul style="padding-left:1rem; margin-bottom:0.5rem;">
-          <li>PIB par habitant (log) — +0.76 (forte)</li>
-          <li>Scolarisation maternelle — +0.58 (modérée)</li>
-          <li>Scolarisation primaire — positive (effet moindre)</li>
-          <li>Appartenance à l'OCDE (dummy) — positive</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Mitigées -->
-    <div class="col-12 col-md-4">
-      <div class="p-3 h-100" style="background:#fff; border-left: 4px solid #ffc107; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
-        <h6 class="mb-2" style="font-weight:600;">Corrélations mitigées</h6>
-        <ul style="padding-left:1rem; margin-bottom:0.5rem;">
-          <li>Part du PIB consacrée à l'éducation (%) — mitigée / dépend du contexte</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Négatives -->
-    <div class="col-12 col-md-4">
-      <div class="p-3 h-100" style="background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
-        <h6 class="mb-2" style="font-weight:600;">Corrélations négatives</h6>
-        <ul style="padding-left:1rem; margin-bottom:0.5rem;">
-          <li>Ratio élèves / enseignant — négative</li>
-          <li>Taux de sous-alimentation — négative</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Graphique et bouton export -->
-  <div class="mt-4 p-3" style="background-color: white; border-radius:8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
-    <div class="d-flex justify-content-between align-items-start mb-2">
-      <h5 style="margin:0;">Visualisation des corrélations</h5>
-      <div>
-        <button id="downloadChartBtn" class="btn btn-sm btn-outline-primary" aria-label="Exporter le graphique en PNG">Exporter PNG</button>
-      </div>
-    </div>
-
-    <!-- forcer une hauteur raisonnable, responsive -->
-    <div style="max-width:900px; width:100%; margin:0 auto;">
-      <canvas id="correlationChart" style="width:100%; height:180px;"></canvas>
-    </div>
-  </div>
-
-  <!-- Modèle régression (résumé) -->
-  <section class="card-custom mt-3">
-    <h2>Régression linéaire — Modèle final (synthèse)</h2>
-    <p class="text-muted">Forme retenue :</p>
-    <pre style="white-space:pre-wrap;">ln_PISA = β0 + β1 * dépense_éducation + β2 * ln(PIB/hab) + β3 * scolarisation_primaire
-+ β4 * sous_alimentation + β5 * OCDE + β6 * (scolarisation_maternelle : OCDE) + ε</pre>
-
-    <p class="text-muted">Points clés :</p>
-    <ul class="text-muted">
-      <li>R² ajusté ≈ 0.717 (≈ 74% de variance expliquée).</li>
-      <li>PIB/hab (log) : effet positif robuste.</li>
-      <li>Sous-alimentation : effet négatif significatif.</li>
-      <li>Interaction : la scolarisation maternelle a un effet plus fort hors OCDE.</li>
-    </ul>
-  </section>
-
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const labels = ['PIB/hab', 'Scolarisation maternelle', 'Ratio élèves/enseignant', 'Scolarisation primaire', 'Sous-alimentation', 'OCDE'];
-      const values = [0.76, 0.58, -0.5, 0.3, -0.4, 0.6];
-
-      // couleurs correspondantes (positif / mitigé / négatif)
-      const colors = values.map(v => v > 0.4 ? '#28a745' : (v < -0.2 ? '#dc3545' : '#ffc107'));
-
-      const ctx = document.getElementById('correlationChart').getContext('2d');
-
-      // largeur fixe / responsive : on utilise maintainAspectRatio=false pour contrôler la hauteur
-      const correlationChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Corrélation avec le score PISA',
-            data: values,
-            backgroundColor: colors,
-            borderColor: colors,
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return context.parsed.y.toFixed(2);
+            <section class="card-custom">
+          <h2>Variables retenues & corrélations</h2>
+        
+          <!-- Boîte des corrélations marquantes -->
+          <div class="highlight-box mb-4 p-3" style="background-color: #eef9ff; border-left: 4px solid #007bff; border-radius: 6px;">
+            <h5 style="margin-bottom:0.5rem;">Corrélations marquantes</h5>
+            <div style="font-size:0.95rem;">
+              <div><strong>PIB par habitant (log) :</strong> +0.76 (forte)</div>
+              <div><strong>Sous-alimentation :</strong> -0.59 (forte)</div>
+            </div>
+          </div>
+        
+          <!-- Légende -->
+          <div class="d-flex gap-3 mb-3" role="list" aria-label="Légende corrélations" style="flex-wrap:wrap;">
+            <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
+              <span style="width:12px; height:12px; background-color:#28a745; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
+              Corrélation positive (≥ 0.50)
+            </div>
+            <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
+              <span style="width:12px; height:12px; background-color:#dc3545; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
+              Corrélation négative (≤ -0.50)
+            </div>
+            <div class="d-flex align-items-center gap-1" style="font-size:0.9rem;">
+              <span style="width:12px; height:12px; background-color:#ffc107; border-radius:50%; display:inline-block;" aria-hidden="true"></span>
+              Corrélation mitigée (|r| &lt; 0.50)
+            </div>
+          </div>
+        
+          <!-- Regroupement des variables par catégorie (avec classification selon seuils) -->
+          <div class="row g-3">
+            <!-- Positives -->
+            <div class="col-12 col-md-4">
+              <div class="p-3 h-100" style="background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <h6 class="mb-2" style="font-weight:600;">Corrélations positives (≥ 0.50)</h6>
+                <ul style="padding-left:1rem; margin-bottom:0.5rem;">
+                  <li>PIB par habitant (log) — 0.7569 (forte)</li>
+                  <li>Scolarisation maternelle — 0.5837 (modérée/forte)</li>
+                </ul>
+              </div>
+            </div>
+        
+            <!-- Mitigées -->
+            <div class="col-12 col-md-4">
+              <div class="p-3 h-100" style="background:#fff; border-left: 4px solid #ffc107; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <h6 class="mb-2" style="font-weight:600;">Corrélations mitigées (|r| &lt; 0.50)</h6>
+                <ul style="padding-left:1rem; margin-bottom:0.5rem;">
+                  <li>Dépense éducation — 0.3417 (mitigée)</li>
+                  <li>Scolarisation primaire — 0.3262 (mitigée)</li>
+                </ul>
+              </div>
+            </div>
+        
+            <!-- Négatives -->
+            <div class="col-12 col-md-4">
+              <div class="p-3 h-100" style="background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+                <h6 class="mb-2" style="font-weight:600;">Corrélations négatives (≤ -0.50)</h6>
+                <ul style="padding-left:1rem; margin-bottom:0.5rem;">
+                  <li>Ratio élèves / enseignant — -0.5797 (négative)</li>
+                  <li>Sous-alimentation — -0.5903 (négative)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        
+          <!-- Graphique (avec valeurs issues de R) -->
+          <div class="mt-4 p-3" style="background-color: white; border-radius:8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+            <h5 style="margin:0 0 0.5rem 0;">Visualisation des corrélations (corrélation avec log PISA)</h5>
+        
+            <div style="max-width:900px; width:100%; margin:0 auto;">
+              <canvas id="correlationChart" style="width:100%; height:180px;"></canvas>
+            </div>
+          </div>
+        
+          <!-- Régression synthèse (inchangé) -->
+          <section class="card-custom mt-3">
+            <h2>Régression linéaire — Modèle final (synthèse)</h2>
+            <p class="text-muted">Forme retenue :</p>
+            <pre style="white-space:pre-wrap;">ln_PISA = β0 + β1 * dépense_éducation + β2 * ln(PIB/hab) + β3 * scolarisation_primaire
+        + β4 * sous_alimentation + β5 * OCDE + β6 * (scolarisation_maternelle : OCDE) + ε</pre>
+        
+            <p class="text-muted">Points clés :</p>
+            <ul class="text-muted">
+              <li>R² ajusté ≈ 0.717 (≈ 74% de variance expliquée).</li>
+              <li>PIB/hab (log) : effet positif robuste.</li>
+              <li>Sous-alimentation : effet négatif significatif.</li>
+              <li>Interaction : la scolarisation maternelle a un effet plus fort hors OCDE.</li>
+            </ul>
+          </section>
+        
+          <!-- Chart.js -->
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              // Valeurs tirées de ta sortie R (corrélation de chaque variable avec log PISA)
+              const labels = [
+                'Dépense éducation',
+                'Ratio élèves / enseignant',
+                'log PIB habitant',
+                'Scolarisation maternelle',
+                'Scolarisation primaire',
+                'Sous alimentation'
+              ];
+              const values = [0.3416842, -0.5797436, 0.7568850, 0.5836792, 0.3261518, -0.5902695];
+        
+              // Règle de classification : >=0.50 = positif (vert), <= -0.50 = négatif (rouge), sinon mitigé (jaune)
+              const colors = values.map(v => {
+                if (v >= 0.50) return '#28a745';      // vert
+                if (v <= -0.50) return '#dc3545';     // rouge
+                return '#ffc107';                     // jaune
+              });
+        
+              const ctx = document.getElementById('correlationChart').getContext('2d');
+        
+              const correlationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    label: 'r (corrélation avec log PISA)',
+                    data: values,
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                      callbacks: {
+                        label: function(context) {
+                          return context.parsed.y.toFixed(3);
+                        }
+                      }
+                    }
+                  },
+                  scales: {
+                    y: {
+                      suggestedMin: -1,
+                      suggestedMax: 1,
+                      title: { display: true, text: 'Coefficient de corrélation (r)' },
+                      ticks: { stepSize: 0.25 }
+                    }
+                  }
                 }
-              }
-            }
-          },
-          scales: {
-            y: {
-              suggestedMin: -1,
-              suggestedMax: 1,
-              title: { display: true, text: 'Valeur de corrélation' },
-              ticks: { stepSize: 0.25 }
-            }
-          }
-        }
-      });
+              });
+            });
+          </script>
+        </section>
 
-      // bouton export PNG
-      document.getElementById('downloadChartBtn').addEventListener('click', function() {
-        const link = document.createElement('a');
-        link.href = correlationChart.toBase64Image();
-        link.download = 'correlations_pisa_chart.png';
-        link.click();
-      });
-    });
-  </script>
-</section>
-
-
-    <section class="card-custom">
-  <h2>Cartes — Scores observés & Prédictions</h2>
-  <p class="text-muted">
-    1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.
-  </p>
-
-  <div class="row">
-    <div class="col-md-6">
-      <div class="visual-container" style="padding: 0; margin: 0;">
-        <div style="width:100%; max-width:1200px; margin:0 auto; padding:0; display:flex; flex-direction:column; gap:0;">
 
           <!-- ---------- Responsive map iframe (mobile friendly) ---------- -->
             <style>
