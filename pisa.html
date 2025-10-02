@@ -250,28 +250,34 @@
     </section>
 
     <section class="card-custom">
-  <h2>Régression linéaire — Modèle final</h2>
+  <h2>Régression linéaire — Modèle final retenu</h2>
 
   <!-- Introduction -->
-  <div class="alert alert-light border-start border-primary border-3">
-    <h5><i class="bi bi-question-circle"></i> Pourquoi ce modèle ?</h5>
-    <p>Parmi les modèles testés, celui-ci offre le meilleur compromis entre <strong>R² ajusté</strong> (0.717) et <strong>parcimonie</strong>. La transformation <code>log(PISA)</code> améliore la linéarité et l’interprétation des coefficients.</p>
+  <div class="alert alert-light border-start border-primary border-3 mb-4">
+    <h5><i class="bi bi-question-circle-fill"></i> Pourquoi ce modèle ?</h5>
+    <p>Plusieurs modèles ont été testés. Celui-ci a été retenu pour son <strong>R² ajusté élevé (0.717)</strong> et sa <strong>pertinence économique</strong>.</p>
+    <p><strong>Pourquoi log(PISA) ?</strong> La transformation logarithmique linéarise la relation et permet d’interpréter les coefficients comme des élasticités.</p>
   </div>
 
   <!-- Équation -->
-  <div class="bg-light p-3 rounded">
-    <pre style="white-space:pre-wrap; margin:0;">ln(PISA) = β₀ + β₁·dépense_éducation + β₂·ln(PIB/hab) + ... + β₆·(scolarisation_maternelle × OCDE) + ε</pre>
+  <div class="bg-light p-3 rounded mb-4">
+    <h6><i class="bi bi-calculator-fill"></i> Équation du modèle</h6>
+    <pre style="white-space:pre-wrap; margin:0;">ln(PISA) = β₀ + β₁·dépense_éducation + β₂·ln(PIB/hab) + β₃·scolarisation_primaire
+         + β₄·sous_alimentation + β₅·OCDE
+         + β₆·(scolarisation_maternelle × OCDE) + ε</pre>
+    <p class="mb-0"><small><strong>Interaction OCDE</strong> : L’effet de la scolarisation maternelle est <strong>plus fort hors OCDE</strong>.</small></p>
   </div>
 
-  <!-- Interprétation -->
-  <div class="row mt-3">
+  <!-- Variables significatives/non significatives -->
+  <div class="row mb-4">
     <div class="col-md-6">
       <div class="card h-100">
         <div class="card-body">
-          <h6 class="card-title"><i class="bi bi-check2-circle text-success"></i> Variables significatives</h6>
+          <h6 class="card-title"><i class="bi bi-check-circle-fill text-success"></i> Variables significatives</h6>
           <ul>
-            <li><strong>PIB/hab (log)</strong> : +1% → +0.71% du score.</li>
-            <li><strong>Sous-alimentation</strong> : 1 point → -12.4 points.</li>
+            <li><strong>ln(PIB/hab)</strong> : +1% → +0.71% du score.</li>
+            <li><strong>Sous-alimentation</strong> : +1 point → -12.4 points.</li>
+            <li><strong>Scolarisation maternelle × OCDE</strong> : Effet plus fort hors OCDE.</li>
           </ul>
         </div>
       </div>
@@ -279,9 +285,9 @@
     <div class="col-md-6">
       <div class="card h-100">
         <div class="card-body">
-          <h6 class="card-title"><i class="bi bi-x-circle text-danger"></i> Variables exclues</h6>
+          <h6 class="card-title"><i class="bi bi-x-circle-fill text-danger"></i> Variables non significatives</h6>
           <ul>
-            <li>Ratio élèves/enseignant (non significatif).</li>
+            <li>Ratio élèves/enseignant (p > 0.10).</li>
             <li>Dépense éducation (redondante avec le PIB).</li>
           </ul>
         </div>
@@ -289,14 +295,33 @@
     </div>
   </div>
 
-  <!-- Performance -->
-  <div class="mt-3">
-    <h5><i class="bi bi-speedometer2"></i> Performance</h5>
-    <p>R² ajusté : <strong>0.717</strong> (74% de variance expliquée).</p>
-    <div class="visual-container">
-      <iframe src="assets/qqplot_pisa.html" style="width:100%; height:200px;"></iframe>
-      <p class="small text-muted">QQ-plot des résidus (normalité validée).</p>
+  <!-- Interprétations clés (cartes Bootstrap) -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title"><i class="bi bi-speedometer2"></i> R² ajusté = 0.717</h6>
+          <p class="card-text">74% de la variance expliquée.</p>
+        </div>
+      </div>
     </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title"><i class="bi bi-cash-stack"></i> PIB/habitant</h6>
+          <p class="card-text">Effet positif et robuste.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Limites -->
+  <div class="alert alert-warning">
+    <h6><i class="bi bi-exclamation-triangle-fill"></i> Limites</h6>
+    <ul>
+      <li><strong>Causalité</strong> : Associations, pas liens de cause à effet.</li>
+      <li><strong>Données manquantes</strong> : IC larges pour certains pays.</li>
+    </ul>
   </div>
 </section>
 
