@@ -213,7 +213,7 @@
           <!-- Légende prévision (générée via R, idéalement envoie postMessage avec sa hauteur) -->
           <iframe
             id="legend2-iframe"
-            src="assets/legend_prevision.html"
+            src="assets/legend_pisa2.html"
             style="width:100%; max-width:900px; border:none; display:block; background:transparent;"
             title="Légende prévision PISA"
             loading="lazy"
@@ -349,10 +349,12 @@
     });
   });
 })();
+</script>
 
-
-    // Scripts pour iframes
+   <!-- Scripts pour iframes (même logique que ton script qui fonctionnait pour la colonne gauche) -->
+  <script>
     (function(){
+      // même fonction que tu utilises : calcule la hauteur du document de l'iframe
       function setIframeHeight(iframe){
         try{
           const doc = iframe.contentWindow.document;
@@ -362,11 +364,22 @@
           );
           iframe.style.height = (h + 4) + 'px';
           iframe.style.overflow = 'hidden';
-        } catch(e){}
+        } catch(e){
+          // silent fail si cross-origin
+        }
       }
+
+      // get elements
       const legend = document.getElementById('legend-iframe');
       const mapIf = document.getElementById('map-iframe');
+      const legend2 = document.getElementById('legend2-iframe');
+      const map2If = document.getElementById('map2-iframe');
+
+      // listeners load pour légendes -> ajuste hauteur
       if (legend) legend.addEventListener('load', function(){ setIframeHeight(legend); });
+      if (legend2) legend2.addEventListener('load', function(){ setIframeHeight(legend2); });
+
+      // listeners load pour maps -> tenter de supprimer marges internes puis laisser la hauteur définie par le widget
       if (mapIf) {
         mapIf.addEventListener('load', function(){
           try {
@@ -374,18 +387,51 @@
             md.documentElement.style.margin = 0;
             md.body.style.margin = 0;
             md.body.style.padding = 0;
+            // essayer aussi d'ajuster la hauteur si possible
+            setIframeHeight(mapIf);
           } catch(e){}
         });
       }
+
+      if (map2If) {
+        map2If.addEventListener('load', function(){
+          try {
+            const md = map2If.contentWindow.document;
+            md.documentElement.style.margin = 0;
+            md.body.style.margin = 0;
+            md.body.style.padding = 0;
+            setIframeHeight(map2If);
+          } catch(e){}
+        });
+      }
+
+      // gestion des postMessage (légendes ou wrappers peuvent envoyer leur hauteur)
       window.addEventListener('message', function(ev){
-        if(ev && ev.data && ev.data.type === 'legend-height' && legend){
-          legend.style.height = (ev.data.height + 4) + 'px';
+        if(!ev || !ev.data) return;
+        const d = ev.data;
+        // légende poste {type:'legend-height', height: n}
+        if(d.type === 'legend-height' && typeof d.height === 'number'){
+          if (legend) legend.style.height = (d.height + 4) + 'px';
+          if (legend2) legend2.style.height = (d.height + 4) + 'px';
+        }
+        // image/map wrapper poste {type:'image-height' or 'map-height'}
+        if((d.type === 'image-height' || d.type === 'map-height') && typeof d.height === 'number'){
+          if (mapIf) mapIf.style.height = (d.height + 4) + 'px';
+          if (map2If) map2If.style.height = (d.height + 4) + 'px';
+        }
+        // si iframe envoie {type:'set-iframe-height', id:'legend2-iframe', height:n}
+        if(d.type === 'set-iframe-height' && d.id && typeof d.height === 'number'){
+          const el = document.getElementById(d.id);
+          if(el) el.style.height = (d.height + 4) + 'px';
         }
       });
-      function adjustMapHeight() {
+
+      // comportement mobile : ajuste la hauteur des cartes pour éviter boîtes trop petites / scroll internes
+      function adjustMapHeight(){
         try {
           const w = window.innerWidth;
           const h = window.innerHeight;
+          // si mobile / petit écran, fixe une hauteur relative
           if (mapIf) {
             if (w <= 768) {
               const target = Math.max(320, Math.round(h * 0.65));
@@ -394,14 +440,40 @@
               mapIf.style.height = '';
             }
           }
+          if (map2If) {
+            if (w <= 768) {
+              const target2 = Math.max(320, Math.round(h * 0.65));
+              map2If.style.height = target2 + 'px';
+            } else {
+              map2If.style.height = '';
+            }
+          }
         } catch(e){}
       }
+
       window.addEventListener('resize', adjustMapHeight);
       window.addEventListener('orientationchange', function(){ setTimeout(adjustMapHeight, 200); });
       window.addEventListener('load', adjustMapHeight);
       adjustMapHeight();
+
+      // fallbacks : retenter un ajustement après un court délai pour les fonts/images chargées tard
+      setTimeout(function(){
+        if (legend) setIframeHeight(legend);
+        if (mapIf) setIframeHeight(mapIf);
+        if (legend2) setIframeHeight(legend2);
+        if (map2If) setIframeHeight(map2If);
+      }, 300);
+
+      setTimeout(function(){
+        if (legend) setIframeHeight(legend);
+        if (mapIf) setIframeHeight(mapIf);
+        if (legend2) setIframeHeight(legend2);
+        if (map2If) setIframeHeight(map2If);
+      }, 1000);
+
     })();
   </script>
+  
 </body>
 </html>
 
