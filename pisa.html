@@ -161,28 +161,108 @@
       </div>
     </section>
 
-    <!-- Cartes -->
-    <section class="card-custom">
-      <h2>Cartes — Scores observés & Prédictions</h2>
-      <p class="text-muted">1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.</p>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="visual-container" style="padding: 0; margin: 0;">
-            <div style="width:100%; max-width:1200px; margin:0 auto; padding:0; display:flex; flex-direction:column; gap:0;">
-              <iframe id="map-iframe" src="assets/Carte_PISA_nolegend.html" style="width:100%; border:none; display:block; background:transparent;" title="Carte interactive PISA" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-              <iframe id="legend-iframe" src="assets/legend_pisa.html" style="width:100%; max-width:900px; border:none; display:block; background:transparent;" title="Légende PISA" loading="lazy"></iframe>
-            </div>
-          </div>
-          <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
-        </div>
-        <div class="col-md-6">
-          <div class="visual-container" style="padding: 0; margin: 0;">
-            <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
-          </div>
-          <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
+<!-- Cartes -->
+<section class="card-custom">
+  <h2>Cartes — Scores observés & Prédictions</h2>
+  <p class="text-muted">
+    1) Carte des scores PISA observés — 2) Carte des prédictions (pays non testés) avec intervalles de confiance.
+  </p>
+
+  <div class="row">
+    <!-- Col gauche : carte interactive + légende -->
+    <div class="col-md-6">
+      <div class="visual-container" style="padding: 0; margin: 0;">
+        <div style="width:100%; max-width:1200px; margin:0 auto; padding:0; display:flex; flex-direction:column; gap:0;">
+
+          <!-- ********* remplacer src par ton nouveau widget plotly (prévisions) ********* -->
+          <iframe
+            id="map-iframe"
+            src="assets/Carte_prevision_interactive.html"
+            style="width:100%; border:none; display:block; background:transparent;"
+            title="Carte interactive PISA — Prévisions"
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-forms"
+          ></iframe>
+
+          <!-- Légende (remplace par legend_prevision ou legend_pisa2 si tu en as créé une) -->
+          <iframe
+            id="legend-iframe"
+            src="assets/legend_pisa.html"
+            style="width:100%; max-width:900px; border:none; display:block; background:transparent;"
+            title="Légende PISA"
+            loading="lazy"
+          ></iframe>
+
         </div>
       </div>
-    </section>
+      <p class="small text-muted mt-2">Survolez un pays pour voir son score PISA et sa catégorie.</p>
+    </div>
+
+    <!-- Col droite : cartes des prédictions (statique ou autre) -->
+    <div class="col-md-6">
+      <div class="visual-container" style="padding: 0; margin: 0;">
+        <p class="text-muted">[Carte des prédictions PISA — remplace par ton image ou iframe]</p>
+      </div>
+      <p class="small text-muted">Carte des prédictions avec intervalles de confiance.</p>
+    </div>
+  </div>
+
+  <!-- ---------- script : ajuste la hauteur des iframes et nettoie marges internes ---------- -->
+  <script>
+    // Tente d'ajuster la hauteur d'un iframe depuis son document (si même origine)
+    function setIframeHeightFromDoc(iframe){
+      try {
+        const doc = iframe.contentWindow.document;
+        const h = Math.max(
+          doc.documentElement.scrollHeight, doc.documentElement.offsetHeight,
+          doc.body.scrollHeight, doc.body.offsetHeight
+        );
+        iframe.style.height = (h + 4) + 'px'; // petit buffer pour éviter scrollbar 1px
+        iframe.style.overflow = 'hidden';
+      } catch(e) {
+        // cross-origin possible -> fallback avec postMessage
+        console.warn('Impossible d\'accéder au contenu iframe (cross-origin?)', e);
+      }
+    }
+
+    // Ecoute les messages postMessage envoyés par les iframes (legend & wrapper peuvent les poster)
+    window.addEventListener('message', function(ev) {
+      if(!ev || !ev.data) return;
+      // hauteur de la légende
+      if(ev.data.type === 'legend-height') {
+        var legend = document.getElementById('legend-iframe');
+        if(legend) legend.style.height = (ev.data.height + 4) + 'px';
+      }
+      // hauteur d'une image wrapper (optionnel)
+      if(ev.data.type === 'image-height') {
+        var mapIf = document.getElementById('map-iframe');
+        if(mapIf) mapIf.style.height = (ev.data.height + 4) + 'px';
+      }
+    });
+
+    // On essaye d'ajuster directement après le chargement des iframes (si same-origin)
+    document.getElementById('legend-iframe').addEventListener('load', function(){ setIframeHeightFromDoc(this); });
+    document.getElementById('map-iframe').addEventListener('load', function(){
+      // Ajustement du height si possible ; sinon laisse la hauteur définie dans le widget plotly
+      setIframeHeightFromDoc(this);
+
+      // Essayer d'enlever marges internes éventuelles dans le widget (si même origine)
+      try {
+        const md = this.contentWindow.document;
+        md.documentElement.style.margin = 0;
+        md.body.style.margin = 0;
+        md.body.style.padding = 0;
+      } catch(e){}
+    });
+
+    // petit fallback après un délai (au cas où load se soit déclenché avant script)
+    setTimeout(function(){
+      try { setIframeHeightFromDoc(document.getElementById('legend-iframe')); } catch(e){}
+      try { setIframeHeightFromDoc(document.getElementById('map-iframe')); } catch(e){}
+    }, 400);
+  </script>
+</section>
+
 
       <!-- Régression -->
     <section class="card-custom">
